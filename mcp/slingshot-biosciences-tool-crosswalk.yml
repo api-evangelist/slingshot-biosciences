@@ -1,0 +1,119 @@
+generated: '2026-08-05'
+method: derived
+source: mcp/slingshot-biosciences-mcp-tools.json + graphql/slingshot-biosciences-storefront.graphql
+note: >-
+  Slingshot Bio publishes no OpenAPI. Its machine-readable core is the Shopify
+  Storefront GraphQL schema (introspected anonymously, 428 types), and the
+  agent-facing projection over it is the Storefront MCP server (tools/list
+  answered anonymously). This crosswalk therefore binds each MCP tool to the
+  GraphQL root field(s) that back it rather than to REST operationIds. Every
+  field named below was verified present in the introspected schema; nothing is
+  inferred from Shopify's public documentation.
+surfaces:
+  openapi: null            # provider publishes no OpenAPI
+  graphql:
+    endpoint: https://slingshot-bio.myshopify.com/api/2026-07/graphql.json
+    file: graphql/slingshot-biosciences-storefront.graphql
+    introspection: open
+    gated: false
+    query_fields: 35
+    mutation_fields: 40
+  mcp:
+    url: https://slingshot-bio.myshopify.com/api/mcp
+    file: mcp/slingshot-biosciences-mcp.yml
+    tools_list: open
+    gated: false
+    note: >-
+      tools/list is anonymous; customer-scoped execution requires an OAuth token
+      from https://shopify.com/authentication/60285812930.
+crosswalk:
+- tool: search_catalog
+  category: catalog
+  graphql: [search, products, predictiveSearch]
+  binding: graphql
+  confidence: high
+  note: >-
+    Natural-language + filter product search. QueryRoot.search and
+    QueryRoot.products both accept query/filter arguments and return paginated
+    connections; predictiveSearch is the typeahead variant.
+- tool: get_product_details
+  category: catalog
+  graphql: [product, productByHandle]
+  binding: graphql
+  confidence: high
+  note: >-
+    product(id:) resolves by ID as the tool does; the options parameter maps to
+    Product.variantBySelectedOptions / selectedOptions on the same type.
+- tool: get_cart
+  category: cart
+  graphql: [cart]
+  binding: graphql
+  confidence: high
+  note: QueryRoot.cart(id:) returns lines, deliveryGroups, discountCodes and checkoutUrl.
+- tool: update_cart
+  category: cart
+  graphql:
+  - cartCreate
+  - cartLinesAdd
+  - cartLinesUpdate
+  - cartLinesRemove
+  - cartBuyerIdentityUpdate
+  - cartDeliveryAddressesAdd
+  - cartDeliveryAddressesReplace
+  - cartSelectedDeliveryOptionsUpdate
+  - cartDiscountCodesUpdate
+  - cartGiftCardCodesAdd
+  - cartGiftCardCodesUpdate
+  - cartNoteUpdate
+  binding: graphql
+  confidence: high
+  note: >-
+    One MCP tool fans out to twelve GraphQL mutations — the single largest
+    surface divergence here. Omitting cart_id makes it cartCreate; each named
+    input property maps to one mutation. Agents get a consolidated call that has
+    no GraphQL equivalent.
+- tool: search_shop_policies_and_faqs
+  category: content
+  graphql: [shop, pages, pageByHandle]
+  binding: graphql
+  confidence: low
+  note: >-
+    Semantic mapping only. The tool answers natural-language policy questions
+    from a server-side retrieval index; Shop.shippingPolicy/refundPolicy/
+    privacyPolicy/termsOfService and the pages connection are the underlying
+    documents, but there is no GraphQL field that performs the retrieval.
+mcp_only:
+- tool: update_cart
+  reason: >-
+    Composite. No single GraphQL mutation performs line-item, buyer, delivery,
+    discount, gift-card and note updates in one round trip.
+- tool: search_shop_policies_and_faqs
+  reason: >-
+    Server-side natural-language retrieval over policy and FAQ content. Not
+    expressible as a GraphQL field.
+graphql_only:
+- fields: [article, articles, blog, blogByHandle, blogs]
+  reason: >-
+    Editorial/blog content is queryable over GraphQL but exposed to agents only
+    through the site's markdown twins and the Sanity Content Lake API, not
+    through any MCP tool.
+- fields: [collection, collectionByHandle, collections]
+  reason: >-
+    The 30+ product collections that organise the catalog have no MCP tool;
+    agents can only reach them via search_catalog free text.
+- fields: [customer, customerCreate, customerUpdate, customerAccessTokenCreate, customerAddressCreate]
+  reason: Customer account management has no MCP tool on the storefront server.
+- fields: [metaobject, metaobjects, menu, urlRedirects, sitemap, localization, locations]
+  reason: Site structure and localization primitives, not surfaced as tools.
+- fields: [cartSubmitForCompletion, cartPrepareForCompletion, cartCompletionAttempt, cartPaymentUpdate]
+  reason: >-
+    Checkout completion is GraphQL-only; the MCP surface hands agents a
+    checkoutUrl instead of letting them submit payment.
+rest_only: []
+coverage:
+  mcp_tools_named: 5
+  mcp_tools_bound: 5
+  mcp_only: 2
+  graphql_root_fields: 75
+  graphql_fields_with_a_tool: 20
+  rest_operations_total: 0

@@ -1,0 +1,39 @@
+generated: '2026-08-05'
+method: probed
+source: https://slingshot-bio.myshopify.com/.well-known/oauth-authorization-server
+note: >-
+  There is no OpenAPI to derive scopes from. These are the scopes the store's own
+  OAuth 2.0 / OIDC authorization server advertises in its RFC 8414 discovery
+  document, captured verbatim at
+  well-known/slingshot-biosciences-oauth-authorization-server.json. They govern
+  customer-scoped access to the Customer Account API and the customer-scoped half
+  of the MCP server; anonymous storefront reads need no scope at all.
+schemes:
+- name: shopify-customer-account
+  issuer: https://shopify.com/authentication/60285812930
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://shopify.com/authentication/60285812930/oauth/authorize
+    tokenUrl: https://shopify.com/authentication/60285812930/oauth/token
+    code_challenge_methods: [S256]
+scopes:
+- scope: openid
+  description: Standard OpenID Connect scope; requests an id_token identifying the customer.
+  flows: [authorizationCode]
+- scope: email
+  description: Releases the customer's email and email_verified claims.
+  flows: [authorizationCode]
+- scope: customer-account-api:full
+  description: >-
+    Full access to the Customer Account API for the authenticated customer —
+    orders, addresses, profile and subscriptions on the Slingshot Bio store.
+  flows: [authorizationCode]
+- scope: customer-account-mcp-api:full
+  description: >-
+    Full customer-scoped access through the MCP server, letting an agent act on
+    the authenticated customer's account rather than only the anonymous catalog.
+  flows: [authorizationCode]
+x-evidence:
+  fetched: '2026-08-05'
+  url: https://slingshot-bio.myshopify.com/.well-known/oauth-authorization-server
+  http_status: 200

@@ -1,18 +1,85 @@
 aid: slingshot-biosciences
 name: Slingshot Biosciences
-description: 'Slingshot Biosciences is a company surfaced via the API Evangelist harvest backlog (source:
-  secondary-market) and added to the network as a stub for full-pipeline profiling.'
+description: 'Slingshot Biosciences is an Emeryville, California biotechnology company
+  that engineers synthetic cell mimics — hydrogel-based particles that behave like
+  real cells — as reproducible reference materials and controls for flow cytometry,
+  spectral unmixing, immunophenotyping, cell and gene therapy potency assays, and instrument
+  standardization. Its product families include TruCytes biomarker controls, ViaComp
+  cell health controls, FlowCytes and ScatterBridge calibration controls, SpectraComp
+  compensation and unmixing controls, QuantCytes quantitation controls and StimCytes
+  functional controls. The company sells direct through a Shopify-backed storefront
+  and publishes an unusually complete agent-facing surface for a life-sciences vendor:
+  an llms.txt, an RFC 9727 /.well-known/api-catalog naming its Shopify Storefront GraphQL
+  and Sanity Content Lake GROQ endpoints, content negotiation that serves markdown
+  twins of every canonical page to agents that send Accept: text/markdown, and a live
+  Shopify Storefront MCP server.'
+image: https://www.slingshotbio.com/favicon.ico
 url: https://raw.githubusercontent.com/api-evangelist/slingshot-biosciences/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-08-05'
 modified: '2026-08-05'
 tags:
 - Company
-apis: []
+- Biotechnology
+- Life Sciences
+- Flow Cytometry
+- Laboratory
+- Synthetic Biology
+- Diagnostics
+- Cell Therapy
+- E-Commerce
+- GraphQL
+- MCP
+apis:
+- name: Slingshot Bio Storefront GraphQL API
+  description: 'The Shopify Storefront GraphQL API for the Slingshot Bio online store,
+    declared by the company in its own /.well-known/api-catalog. Serves products, collections,
+    cart and checkout operations for the cell mimic catalog. Introspection is open
+    anonymously; the schema carries 428 types, 35 query fields and 40 mutations.'
+  humanURL: https://www.slingshotbio.com/collections
+  baseURL: https://slingshot-bio.myshopify.com/api/2026-07/graphql.json
+  tags:
+  - GraphQL
+  - E-Commerce
+  - Products
+  - Cart
+  properties:
+  - type: GraphQL
+    url: graphql/slingshot-biosciences-storefront.graphql
+  - type: Documentation
+    url: https://shopify.dev/docs/api/storefront
+- name: Slingshot Bio Content Lake GROQ API
+  description: 'The Sanity Content Lake GROQ query API for the Slingshot Bio editorial
+    surface — pages, resources, blog posts, press releases, product sheets and webinars
+    — declared by the company in its own /.well-known/api-catalog. The production dataset
+    answers anonymous GROQ queries over HTTPS GET.'
+  humanURL: https://www.slingshotbio.com/resources/blog
+  baseURL: https://9l0m1rv5.api.sanity.io/v2025-08-29/data/query/production
+  tags:
+  - Content
+  - CMS
+  - GROQ
+  properties:
+  - type: Documentation
+    url: https://www.sanity.io/docs/http-query
+- name: Slingshot Bio Storefront MCP Server
+  description: 'A live Model Context Protocol server for the Slingshot Bio store, answering
+    anonymous tools/list over HTTP JSON-RPC with five tools: search_catalog, get_product_details,
+    get_cart, update_cart and search_shop_policies_and_faqs. Customer-scoped operations
+    are protected by the OAuth 2.0 authorization server advertised at /.well-known/oauth-protected-resource.'
+  humanURL: https://www.slingshotbio.com/
+  baseURL: https://slingshot-bio.myshopify.com/api/mcp
+  tags:
+  - MCP
+  - Agents
+  - E-Commerce
+  properties:
+  - type: MCPServer
+    url: mcp/slingshot-biosciences-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/slingshot-biosciences-tool-crosswalk.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -20,4 +87,59 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: https://www.hiive.com/securities/slingshot-biosciences-stock
+  url: https://www.slingshotbio.com/
+- type: Blog
+  url: https://www.slingshotbio.com/resources/blog
+- type: Support
+  url: https://www.slingshotbio.com/contact
+- type: Pricing
+  url: https://www.slingshotbio.com/collections/catalog-products
+- type: SignUp
+  url: https://www.slingshotbio.com/request-a-quote-for-cell-mimics
+- type: TermsOfService
+  url: https://www.slingshotbio.com/terms-and-conditions
+- type: PrivacyPolicy
+  url: https://www.slingshotbio.com/privacy-policy
+- type: WellKnown
+  url: well-known/slingshot-biosciences-well-known.yml
+- type: APICatalog
+  url: well-known/slingshot-biosciences-api-catalog.json
+- type: LLMsTxt
+  url: llms/slingshot-biosciences-llms.txt
+- type: Authentication
+  url: authentication/slingshot-biosciences-authentication.yml
+- type: OAuthScopes
+  url: scopes/slingshot-biosciences-scopes.yml
+- type: Conventions
+  url: conventions/slingshot-biosciences-conventions.yml
+- type: DataModel
+  url: data-model/slingshot-biosciences-data-model.yml
+- type: Lifecycle
+  url: lifecycle/slingshot-biosciences-lifecycle.yml
+- type: Conformance
+  url: conformance/slingshot-biosciences-conformance.yml
+- type: ErrorCatalog
+  url: errors/slingshot-biosciences-problem-types.yml
+- type: DomainSecurity
+  url: security/slingshot-biosciences-domain-security.yml
+- type: AgentSkill
+  url: skills/_index.yml
+x-enrichment:
+  date: '2026-08-05'
+  status: enriched
+  artifacts_added: 22
+  pass: local-v1
+x-coverage:
+  state: covered
+  reason: null
+  detail: >-
+    Contract discovery beat the JS-rendered site. The company publishes an
+    llms.txt, an RFC 9727 /.well-known/api-catalog naming two live APIs, markdown
+    twins under Accept content negotiation, an anonymously introspectable
+    Storefront GraphQL schema and an anonymous MCP tools/list.
+  evidence:
+  - url: https://www.slingshotbio.com/.well-known/api-catalog
+    status: 200
+  - url: https://slingshot-bio.myshopify.com/api/mcp
+    status: 200
+  checked: '2026-08-05'

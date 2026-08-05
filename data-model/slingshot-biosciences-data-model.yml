@@ -1,0 +1,185 @@
+generated: '2026-08-05'
+method: derived
+source: graphql/slingshot-biosciences-storefront.graphql
+note: >-
+  Derived mechanically from the anonymously introspected Storefront GraphQL
+  schema (428 types). Every entity and relationship below was read out of the
+  SDL — field names and target types are verbatim, not inferred. Ids are Shopify
+  global ids of the form gid://shopify/<Type>/<numeric-id>, confirmed by an
+  anonymous products query that returned gid://shopify/Product/7067522990274.
+id_scheme:
+  format: gid://shopify/<Type>/<id>
+  encoding: base64url in cursors; plain GID in the id field
+  observed_example: gid://shopify/Product/7067522990274
+entities:
+- name: Shop
+  description: The Slingshot Bio store itself. Root of the policy documents the MCP search_shop_policies_and_faqs tool answers from.
+  fields: 22
+- name: Product
+  description: A cell mimic product — ViaComp, SpectraComp, TruCytes, FlowCytes, StimCytes, QuantCytes, ScatterBridge and siblings.
+  fields: 36
+- name: ProductVariant
+  description: A purchasable configuration of a product (size, fluorophore, format).
+  fields: 30
+- name: Collection
+  description: A merchandising grouping — compensation controls, viability controls, potency controls, training kits, and 30+ more.
+  fields: 13
+- name: Cart
+  description: An in-progress order, the object the MCP get_cart and update_cart tools operate on.
+  fields: 20
+- name: CartLine
+  description: One merchandise line within a cart.
+  fields: 12
+- name: Customer
+  description: An authenticated store customer; reachable only with an OAuth customer token.
+  fields: 18
+- name: Order
+  description: A completed order belonging to a customer.
+  fields: 41
+- name: Blog
+  description: An editorial blog container.
+  fields: 10
+- name: Article
+  description: A blog article.
+  fields: 19
+- name: Page
+  description: A static content page.
+  fields: 12
+- name: Menu
+  description: A navigation menu.
+  fields: 5
+- name: SellingPlan
+  description: A subscription or deferred-purchase plan.
+  fields: 11
+- name: Metaobject
+  description: Custom structured content defined by the merchant.
+  fields: 8
+relationships:
+- from: Product
+  to: ProductVariant
+  kind: has_many
+  via: variants
+- from: Product
+  to: ProductVariant
+  kind: has_one
+  via: selectedOrFirstAvailableVariant
+- from: ProductVariant
+  to: Product
+  kind: belongs_to
+  via: product
+- from: Product
+  to: Collection
+  kind: has_many
+  via: collections
+- from: Collection
+  to: Product
+  kind: has_many
+  via: products
+- from: Product
+  to: ProductOption
+  kind: has_many
+  via: options
+- from: Product
+  to: Image
+  kind: has_many
+  via: images
+- from: Product
+  to: SellingPlanGroup
+  kind: has_many
+  via: sellingPlanGroups
+- from: ProductVariant
+  to: MoneyV2
+  kind: has_one
+  via: price
+- from: ProductVariant
+  to: StoreAvailability
+  kind: has_many
+  via: storeAvailability
+- from: Cart
+  to: CartLine
+  kind: has_many
+  via: lines
+- from: Cart
+  to: CartBuyerIdentity
+  kind: has_one
+  via: buyerIdentity
+- from: Cart
+  to: CartCost
+  kind: has_one
+  via: cost
+- from: Cart
+  to: CartDeliveryGroup
+  kind: has_many
+  via: deliveryGroups
+- from: Cart
+  to: CartDiscountCode
+  kind: has_many
+  via: discountCodes
+- from: CartLine
+  to: Merchandise
+  kind: has_one
+  via: merchandise
+  note: Merchandise is a union that resolves to ProductVariant.
+- from: CartLine
+  to: SellingPlanAllocation
+  kind: has_one
+  via: sellingPlanAllocation
+- from: Customer
+  to: Order
+  kind: has_many
+  via: orders
+- from: Customer
+  to: MailingAddress
+  kind: has_many
+  via: addresses
+- from: Customer
+  to: MailingAddress
+  kind: has_one
+  via: defaultAddress
+- from: Order
+  to: OrderLineItem
+  kind: has_many
+  via: lineItems
+- from: Order
+  to: MailingAddress
+  kind: has_one
+  via: shippingAddress
+- from: Order
+  to: Fulfillment
+  kind: has_many
+  via: successfulFulfillments
+- from: Blog
+  to: Article
+  kind: has_many
+  via: articles
+- from: Article
+  to: Blog
+  kind: belongs_to
+  via: blog
+- from: Article
+  to: ArticleAuthor
+  kind: has_one
+  via: authorV2
+- from: Shop
+  to: ShopPolicy
+  kind: has_many
+  via: [privacyPolicy, refundPolicy, shippingPolicy, termsOfService, termsOfSale, legalNotice]
+  note: The documents behind the MCP search_shop_policies_and_faqs tool.
+- from: Shop
+  to: PaymentSettings
+  kind: has_one
+  via: paymentSettings
+- from: Menu
+  to: MenuItem
+  kind: has_many
+  via: items
+secondary_surface:
+  name: Sanity Content Lake
+  endpoint: https://9l0m1rv5.api.sanity.io/v2025-08-29/data/query/production
+  note: >-
+    The editorial half of the data model (pages, resources, press releases,
+    webinars, application notes, technical data sheets) lives in Sanity, not in
+    the storefront schema. Its document types are queryable with GROQ but were
+    not enumerated here — doing so would require crawling the dataset, and the
+    company publishes no schema document for it.
+render: null

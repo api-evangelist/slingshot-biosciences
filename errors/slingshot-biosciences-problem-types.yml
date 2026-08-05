@@ -1,0 +1,70 @@
+generated: '2026-08-05'
+method: probed
+source: live error responses from the two declared API surfaces
+format: non-rfc9457
+note: >-
+  There is no OpenAPI to derive 4xx/5xx responses from, and no published error
+  reference. These envelopes were observed by sending deliberately malformed
+  requests to each declared endpoint on 2026-08-05. Neither surface uses
+  application/problem+json.
+
+envelopes:
+- surface: storefront-graphql
+  endpoint: https://slingshot-bio.myshopify.com/api/2026-07/graphql.json
+  format: GraphQL errors[]
+  http_status_on_error: 200
+  fields: [message, locations, path, extensions.code, extensions.typeName, extensions.fieldName]
+  observed_example: >-
+    {"errors":[{"message":"Field 'nonexistentField' doesn't exist on type
+    'QueryRoot'","locations":[{"line":1,"column":2}],"path":["query","nonexistentField"],
+    "extensions":{"code":"undefinedField","typeName":"QueryRoot","fieldName":"nonexistentField"}}]}
+  note: >-
+    Errors are returned with HTTP 200 in GraphQL fashion; agents must inspect the
+    errors[] array rather than the status line. Mutation-level failures are
+    additionally returned as typed userErrors payloads on the mutation result
+    (CartUserError, CustomerUserError, MetafieldsSetUserError and siblings are all
+    present in the introspected schema).
+- surface: content-lake-groq
+  endpoint: https://9l0m1rv5.api.sanity.io/v2025-08-29/data/query/production
+  format: JSON error object
+  http_status_on_error: 400
+  fields: [error.description, error.type, error.start, error.end, error.query]
+  observed_example: >-
+    {"error":{"description":"unexpected end-of-file, expected expression","end":9,
+    "query":"*[_type==","start":9,"type":"queryParseError"}}
+- surface: website
+  endpoint: https://www.slingshotbio.com
+  format: HTML
+  http_status_on_error: 404
+  note: >-
+    Unknown paths return a genuine 404 with an HTML body. A control probe of
+    /.well-known/zzz-kinlane-control-9931 returned 404, confirming the well-known
+    documents that returned 200 are real and not SPA catch-alls.
+
+problems:
+- status: 200
+  code: undefinedField
+  title: Field does not exist on type
+  surface: storefront-graphql
+  remediation: >-
+    Validate the query against graphql/slingshot-biosciences-storefront.graphql
+    before sending; introspection is open on this endpoint.
+- status: 400
+  code: queryParseError
+  title: GROQ query failed to parse
+  surface: content-lake-groq
+  remediation: The error object carries start/end character offsets into the submitted query.
+- status: 404
+  title: Not found
+  surface: website
+  remediation: Use https://www.slingshotbio.com/sitemap.md or /sitemap.xml for the canonical URL list.
+
+x-evidence:
+  fetched: '2026-08-05'
+  urls:
+  - url: https://slingshot-bio.myshopify.com/api/2026-07/graphql.json
+    http_status: 200
+  - url: https://9l0m1rv5.api.sanity.io/v2025-08-29/data/query/production
+    http_status: 400
+  - url: https://www.slingshotbio.com/.well-known/zzz-kinlane-control-9931
+    http_status: 404

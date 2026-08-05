@@ -1,0 +1,82 @@
+generated: '2026-08-05'
+method: probed
+source: >-
+  https://slingshot-bio.myshopify.com/.well-known/oauth-authorization-server +
+  live anonymous requests to the storefront GraphQL, Sanity GROQ and MCP endpoints
+note: >-
+  Slingshot Bio publishes no OpenAPI, so this profile was probed against the live
+  surfaces rather than derived from securitySchemes. All three declared endpoints
+  answer anonymously for read operations; only customer-scoped operations require
+  a token.
+summary:
+  types: [none, oauth2, openIdConnect]
+  anonymous_read: true
+  oauth2_flows: [authorizationCode]
+  api_key_in: []
+schemes:
+- name: anonymous-storefront
+  type: none
+  applies_to: https://slingshot-bio.myshopify.com/api/2026-07/graphql.json
+  description: >-
+    The Shopify Storefront GraphQL endpoint answers unauthenticated POSTs for
+    shop, product, collection, blog and cart operations, and permits full schema
+    introspection. Verified 2026-08-05: an anonymous query for shop.name and the
+    first three products returned HTTP 200 with real data.
+  evidence:
+    http_status: 200
+    probe: 'POST {shop{name} products(first:3){edges{node{id title handle}}}}'
+- name: anonymous-content-lake
+  type: none
+  applies_to: https://9l0m1rv5.api.sanity.io/v2025-08-29/data/query/production
+  description: >-
+    The Sanity Content Lake production dataset is public-read. An anonymous GROQ
+    query over HTTPS GET returned HTTP 200 with document results.
+  evidence:
+    http_status: 200
+    probe: 'GET ?query=*[_type=="sanity.imageAsset"][0...1]{_id}'
+- name: anonymous-mcp-discovery
+  type: none
+  applies_to: https://slingshot-bio.myshopify.com/api/mcp
+  description: >-
+    MCP tools/list is answered without a token, returning five tools with full
+    inputSchemas.
+  evidence:
+    http_status: 200
+    probe: 'POST {"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+- name: shopify-customer-account-oauth2
+  type: oauth2
+  applies_to: https://slingshot-bio.myshopify.com/api/mcp
+  description: >-
+    Customer-scoped MCP and Customer Account API operations are protected by the
+    OAuth 2.0 authorization server the store advertises via RFC 9728
+    /.well-known/oauth-protected-resource.
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://shopify.com/authentication/60285812930/oauth/authorize
+    tokenUrl: https://shopify.com/authentication/60285812930/oauth/token
+    pkce: [S256]
+  bearer_methods_supported: [header]
+  token_endpoint_auth_methods_supported: [client_secret_basic]
+  source: well-known/slingshot-biosciences-oauth-protected-resource.json
+- name: shopify-customer-account-oidc
+  type: openIdConnect
+  applies_to: https://shopify.com/authentication/60285812930
+  description: >-
+    The same authorization server publishes OpenID Connect discovery metadata:
+    RS256 id_tokens, a JWKS URI, an end_session_endpoint and the openid/email
+    claims set.
+  issuer: https://shopify.com/authentication/60285812930
+  jwks_uri: https://shopify.com/authentication/60285812930/.well-known/jwks.json
+  id_token_signing_alg_values_supported: [RS256]
+  source: well-known/slingshot-biosciences-openid-configuration.json
+x-evidence:
+  fetched: '2026-08-05'
+  urls:
+  - url: https://slingshot-bio.myshopify.com/.well-known/oauth-authorization-server
+    http_status: 200
+  - url: https://slingshot-bio.myshopify.com/.well-known/oauth-protected-resource
+    http_status: 200
+  - url: https://slingshot-bio.myshopify.com/api/2026-07/graphql.json
+    http_status: 200
+  - url: https://9l0m1rv5.api.sanity.io/v2025-08-29/data/query/production
+    http_status: 200

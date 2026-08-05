@@ -1,0 +1,24 @@
+generated: '2026-08-05'
+method: generated
+source: >-
+  graphql/slingshot-biosciences-storefront.graphql (anonymous introspection),
+  mcp/slingshot-biosciences-mcp-tools.json (anonymous tools/list), and live
+  header probes of www.slingshotbio.com
+note: >-
+  Slingshot Bio publishes no OpenAPI, so these skills are grounded in the two
+  machine-readable contracts it does expose: the introspected Storefront GraphQL
+  SDL and the MCP tool manifest. Every operation named below was verified present
+  in one of those two documents — no operation is invented.
+skills:
+- file: slingshot-biosciences-find-cell-mimic-controls.md
+  name: Find Slingshot Bio cell mimic controls
+  api: graphql/slingshot-biosciences-storefront.graphql
+  operations: [search_catalog, get_product_details, search, products, product, productByHandle, collection, collections]
+- file: slingshot-biosciences-build-and-checkout-cart.md
+  name: Build a Slingshot Bio cart and hand off to checkout
+  api: graphql/slingshot-biosciences-storefront.graphql
+  operations: [update_cart, get_cart, cartCreate, cartLinesAdd, cartLinesUpdate, cartLinesRemove, cartBuyerIdentityUpdate, cartDeliveryAddressesAdd, cartSelectedDeliveryOptionsUpdate, cartDiscountCodesUpdate, cartNoteUpdate, cart]
+- file: slingshot-biosciences-read-site-as-markdown.md
+  name: Read slingshotbio.com as markdown
+  api: null
+  operations: ['GET / with Accept: text/markdown', 'GET /sitemap.md', 'GET /llms.txt', 'GET /.well-known/api-catalog']

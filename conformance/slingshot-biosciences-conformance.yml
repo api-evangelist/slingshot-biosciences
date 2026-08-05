@@ -1,0 +1,107 @@
+generated: '2026-08-05'
+method: probed
+source: live probes of www.slingshotbio.com and slingshot-bio.myshopify.com
+note: >-
+  Cross-cutting standards conformance, asserted only where a probe confirmed it.
+  Slingshot Bio publishes no compliance program (no SOC 2 / ISO 27001 / HIPAA
+  page was found), so no Compliance pointer is wired in apis.yml.
+standards:
+- id: rfc9727-api-catalog
+  conforms: true
+  evidence: >-
+    /.well-known/api-catalog returns 200 with content-type
+    application/linkset+json and a valid linkset carrying service-desc and
+    describedby link relations; the api-catalog link relation is also present in
+    the Link header of every page.
+- id: rfc8615-well-known
+  conforms: true
+  evidence: well-known URIs served under /.well-known/ on both the website and store hosts.
+- id: llms-txt
+  conforms: true
+  evidence: >-
+    https://www.slingshotbio.com/llms.txt returns 200 text/plain with H1, summary
+    blockquote and sectioned link lists in llms.txt form.
+- id: rfc7231-content-negotiation
+  conforms: true
+  evidence: >-
+    Accept: text/markdown returns text/markdown for the same canonical URL that
+    returns text/html to a browser, with a correct Vary: Accept response header.
+- id: oauth2
+  conforms: true
+  evidence: >-
+    /.well-known/oauth-authorization-server advertises authorization_code with
+    S256 PKCE, client_secret_basic token auth and a scopes_supported list.
+- id: rfc8414-oauth-server-metadata
+  conforms: true
+  evidence: /.well-known/oauth-authorization-server returns 200 with issuer, token and authorization endpoints.
+- id: rfc9728-oauth-protected-resource
+  conforms: true
+  evidence: >-
+    /.well-known/oauth-protected-resource returns 200 naming the resource, its
+    authorization_servers and bearer_methods_supported.
+- id: oidc
+  conforms: true
+  evidence: >-
+    /.well-known/openid-configuration returns 200 with jwks_uri, RS256
+    id_token_signing_alg_values_supported and the openid/email claims set.
+- id: mcp
+  conforms: true
+  evidence: >-
+    JSON-RPC 2.0 tools/list at https://slingshot-bio.myshopify.com/api/mcp returns
+    200 with five tools carrying JSON Schema inputSchemas.
+- id: graphql-introspection
+  conforms: true
+  evidence: >-
+    Full introspection query returned 428 types anonymously; SDL saved to
+    graphql/slingshot-biosciences-storefront.graphql.
+- id: relay-cursor-connections
+  conforms: true
+  evidence: connection/edge/pageInfo types throughout the introspected storefront schema.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    Errors use GraphQL errors[] (HTTP 200) and a Sanity error object (HTTP 400);
+    no application/problem+json on any surface.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returned 404 on both hosts.
+- id: a2a
+  conforms: false
+  evidence: /.well-known/agent-card.json and /.well-known/agent.json returned 404 on all three hosts.
+- id: openapi
+  conforms: false
+  evidence: >-
+    No OpenAPI at any probed path on the website, the store host or the content
+    API host. The machine-readable contract here is GraphQL SDL plus an MCP tool
+    manifest.
+- id: asyncapi
+  conforms: false
+  evidence: >-
+    No event, streaming or webhook surface is published to the public. Not
+    penalized — this company has no public event surface to describe.
+- id: dnssec
+  conforms: false
+  evidence: security/slingshot-biosciences-domain-security.yml — dnssec false on slingshotbio.com
+- id: caa
+  conforms: false
+  evidence: security/slingshot-biosciences-domain-security.yml — no CAA records on slingshotbio.com
+- id: hsts
+  conforms: true
+  evidence: >-
+    HSTS present on all three hosts; max-age 63072000 on www.slingshotbio.com.
+- id: dmarc
+  conforms: true
+  evidence: >-
+    DMARC record present on slingshotbio.com but with policy p=none — published,
+    not enforcing.
+x-evidence:
+  fetched: '2026-08-05'
+  urls:
+  - url: https://www.slingshotbio.com/.well-known/api-catalog
+    http_status: 200
+  - url: https://slingshot-bio.myshopify.com/.well-known/openid-configuration
+    http_status: 200
+  - url: https://slingshot-bio.myshopify.com/api/mcp
+    http_status: 200
+  - url: https://www.slingshotbio.com/.well-known/security.txt
+    http_status: 404

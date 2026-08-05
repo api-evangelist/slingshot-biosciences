@@ -1,0 +1,66 @@
+generated: '2026-08-05'
+method: searched
+source: https://www.slingshotbio.com/.well-known/api-catalog
+note: >-
+  Probed every host in the profile. www.slingshotbio.com serves an RFC 9727
+  /.well-known/api-catalog linkset naming the company's two machine-readable
+  surfaces; a control path (/.well-known/zzz-kinlane-control-9931) returned 404
+  with an HTML body, so the 200 is a real document and not an SPA catch-all.
+  The OAuth/OIDC discovery documents live on the Shopify store host, which is
+  where the storefront APIs and the MCP server are served from.
+hosts:
+- host: https://www.slingshotbio.com
+  documents:
+  - path: /.well-known/api-catalog
+    status: 200
+    content_type: application/linkset+json
+    file: slingshot-biosciences-api-catalog.json
+  - path: /llms.txt
+    status: 200
+    content_type: text/plain
+    file: ../llms/slingshot-biosciences-llms.txt
+  - path: /robots.txt
+    status: 200
+    content_type: text/plain
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://slingshot-bio.myshopify.com
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    content_type: application/json
+    file: slingshot-biosciences-openid-configuration.json
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: application/json
+    file: slingshot-biosciences-oauth-authorization-server.json
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    content_type: application/json
+    file: slingshot-biosciences-oauth-protected-resource.json
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://checkout.slingshotbio.com
+  documents:
+  - path: /.well-known/agent-card.json
+    status: 404
+x-evidence:
+  fetched: '2026-08-05'
+  control_path: https://www.slingshotbio.com/.well-known/zzz-kinlane-control-9931
+  control_status: 404

@@ -1,0 +1,18 @@
+# Slingshot Bio
+
+> Cell line engineering and bioproduction tooling for therapeutic discovery.
+
+## Content
+
+- [Markdown sitemap](https://www.slingshotbio.com/sitemap.md) — full content index in markdown
+- [XML sitemap](https://www.slingshotbio.com/sitemap.xml) — machine-readable URL list
+- [Products](https://www.slingshotbio.com/collections)
+- [Resources / Blog](https://www.slingshotbio.com/resources/blog)
+- [Case studies](https://www.slingshotbio.com/resources/case-studies)
+
+## How to read this site as markdown
+
+- Send `Accept: text/markdown` to any canonical URL.
+- The same URL serves HTML to browsers and markdown to agents that ask for it.
+- Markdown responses omit styling, tracking pixels, and JavaScript.
+- `X-Robots-Tag: noindex` is set on markdown responses to prevent duplicate indexing.

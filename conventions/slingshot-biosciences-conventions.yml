@@ -1,0 +1,131 @@
+generated: '2026-08-05'
+method: probed
+source: >-
+  Live header and response inspection of www.slingshotbio.com,
+  slingshot-bio.myshopify.com and 9l0m1rv5.api.sanity.io, plus
+  https://www.slingshotbio.com/llms.txt
+note: >-
+  Slingshot Bio's most distinctive convention is not on its APIs but on its
+  website: every canonical page is served as HTML to browsers and as markdown to
+  agents that ask for it, with correct HTTP content negotiation. That is captured
+  here alongside the request/response semantics of the two declared API surfaces.
+
+content_negotiation:
+  supported: true
+  request_header: 'Accept: text/markdown'
+  response_content_type: text/markdown; charset=utf-8
+  vary: Accept
+  scope: every canonical URL on www.slingshotbio.com
+  markdown_index: https://www.slingshotbio.com/sitemap.md
+  markdown_responses_noindex: true
+  markdown_noindex_header: 'X-Robots-Tag: noindex'
+  documented_at: https://www.slingshotbio.com/llms.txt
+  note: >-
+    Verified on https://www.slingshotbio.com/products/viacomp — the same URL
+    returned text/html without the header and text/markdown with it, and the
+    response carried Vary: Accept. Markdown responses omit styling, tracking
+    pixels and JavaScript.
+
+discovery:
+  link_header: >-
+    </.well-known/api-catalog>; rel="api-catalog"; type="application/linkset+json",
+    </sitemap.xml>; rel="sitemap"; type="application/xml"
+  note: >-
+    The RFC 9727 api-catalog link relation is advertised in the Link header of
+    every page, not only at the well-known path.
+  llms_txt: https://www.slingshotbio.com/llms.txt
+  api_catalog: https://www.slingshotbio.com/.well-known/api-catalog
+
+authentication:
+  style: anonymous for reads; OAuth 2.0 authorization-code + PKCE for customer scope
+  detail: authentication/slingshot-biosciences-authentication.yml
+  scopes: scopes/slingshot-biosciences-scopes.yml
+
+versioning:
+  storefront_graphql:
+    scheme: date-based version in the URL path
+    current: '2026-07'
+    supported: ['2025-10', '2026-01', '2026-04', '2026-07']
+    release_candidate: '2026-10'
+    unstable_channel: unstable
+    response_header: 'X-Shopify-Api-Version: 2026-07'
+    introspectable_at: QueryRoot.publicApiVersions
+  content_lake:
+    scheme: date-based version in the URL path
+    current: v2025-08-29
+
+pagination:
+  storefront_graphql:
+    style: Relay cursor connections
+    request_params: [first, after, last, before]
+    response_fields: [pageInfo.hasNextPage, pageInfo.hasPreviousPage, pageInfo.startCursor, pageInfo.endCursor, edges.cursor]
+  content_lake:
+    style: GROQ slice ranges
+    request_params: ['[start...end]']
+  mcp:
+    style: server-paginated
+    note: search_catalog documents that results are paginated with an initial limited page.
+
+rate_limiting:
+  storefront_graphql:
+    style: calculated query cost
+    response_field: extensions.cost.requestedQueryCost
+    observed: 'a 2-field query cost 3; a 3-product query cost 7'
+    headers: none observed
+  note: >-
+    No RateLimit / X-RateLimit / Retry-After headers were returned on any probe.
+    Cost accounting is carried in the GraphQL response body instead.
+
+request_tracing:
+  storefront_graphql:
+    header: X-Request-Id
+    example_format: uuid-epoch
+  website:
+    header: none observed
+
+error_envelope:
+  storefront_graphql:
+    format: GraphQL errors[]
+    http_status_on_error: 200
+    shape: 'errors[].{message, locations[], path[], extensions.code}'
+    rfc9457: false
+  content_lake:
+    format: JSON error object
+    http_status_on_error: 400
+    shape: 'error.{description, type, start, end, query}'
+    rfc9457: false
+  detail: errors/slingshot-biosciences-problem-types.yml
+
+idempotency:
+  supported: false
+  note: >-
+    No idempotency key is accepted on any surface. Cart mutations are not
+    idempotency-keyed; repeating cartLinesAdd adds the line again. Recorded
+    honestly as absent — no Idempotency pointer is wired in apis.yml.
+
+robots:
+  url: https://www.slingshotbio.com/robots.txt
+  user_agent_all: allow
+  disallow: [/api/, /search, /cart, /saved, /og-preview, /mega-menu-test]
+  agent_specific_rules: none
+  note: >-
+    No AI-crawler-specific directives. Human and agent user agents are treated
+    identically, which is consistent with the markdown-twin posture.
+
+cross_links:
+  errors: errors/slingshot-biosciences-problem-types.yml
+  lifecycle: lifecycle/slingshot-biosciences-lifecycle.yml
+  authentication: authentication/slingshot-biosciences-authentication.yml
+  data_model: data-model/slingshot-biosciences-data-model.yml
+  mcp: mcp/slingshot-biosciences-mcp.yml
+
+x-evidence:
+  fetched: '2026-08-05'
+  urls:
+  - url: https://www.slingshotbio.com/products/viacomp
+    http_status: 200
+    note: 'returned text/markdown with Accept: text/markdown, text/html without'
+  - url: https://www.slingshotbio.com/robots.txt
+    http_status: 200
+  - url: https://slingshot-bio.myshopify.com/api/2026-07/graphql.json
+    http_status: 200

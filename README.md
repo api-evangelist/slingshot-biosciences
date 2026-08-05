@@ -42,5 +42,27 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Slingshot Biosciences is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
+Slingshot Biosciences is an Emeryville, California biotechnology company that engineers synthetic
+cell mimics — hydrogel-based particles that behave like real cells — as reproducible reference
+materials and controls for flow cytometry, spectral unmixing, immunophenotyping, cell and gene
+therapy potency assays, and instrument standardization. Product families include TruCytes,
+ViaComp, FlowCytes, ScatterBridge, SpectraComp, QuantCytes and StimCytes.
+
+For a life-sciences vendor it publishes an unusually complete agent-facing surface:
+
+- **`/llms.txt`** — orientation document naming the sitemaps, collections, blog and case studies.
+- **`/.well-known/api-catalog`** — an RFC 9727 linkset declaring two machine-readable APIs
+  (Shopify Storefront GraphQL and a Sanity Content Lake GROQ endpoint). The `api-catalog` link
+  relation is also served in the `Link` header of every page.
+- **Markdown twins** — every canonical URL returns `text/markdown` to a client sending
+  `Accept: text/markdown`, with `Vary: Accept` and `X-Robots-Tag: noindex`. A markdown content
+  index is published at `/sitemap.md`.
+- **A live MCP server** — `https://slingshot-bio.myshopify.com/api/mcp` answers anonymous
+  `tools/list` with five tools; customer-scoped operations are protected by an OAuth 2.0
+  authorization server advertised at `/.well-known/oauth-protected-resource`.
+
+There is no OpenAPI. The machine-readable contract is the anonymously introspectable Storefront
+GraphQL schema (428 types), captured in `graphql/`.
+
+- https://www.slingshotbio.com/
 - https://www.hiive.com/securities/slingshot-biosciences-stock

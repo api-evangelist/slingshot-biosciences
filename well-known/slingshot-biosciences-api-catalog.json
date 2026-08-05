@@ -1,0 +1,26 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://www.slingshotbio.com/",
+      "service-desc": [
+        {
+          "href": "https://slingshot-bio.myshopify.com/api/2026-07/graphql.json",
+          "type": "application/json",
+          "title": "Shopify Storefront GraphQL API (products, collections, cart)"
+        },
+        {
+          "href": "https://9l0m1rv5.api.sanity.io/v2025-08-29/data/query/production",
+          "type": "application/json",
+          "title": "Sanity Content Lake GROQ API (editorial content, pages, resources)"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://www.slingshotbio.com/sitemap.xml",
+          "type": "application/xml",
+          "title": "Sitemap"
+        }
+      ]
+    }
+  ]
+}

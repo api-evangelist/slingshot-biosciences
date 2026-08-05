@@ -1,0 +1,48 @@
+generated: '2026-08-05'
+method: probed
+source: QueryRoot.publicApiVersions on https://slingshot-bio.myshopify.com/api/2026-07/graphql.json
+note: >-
+  Slingshot Bio publishes no versioning policy, deprecation policy, SLA or status
+  page of its own. What it does expose is the version train of the platform its
+  declared APIs run on, which is machine-readable and was queried live.
+versioning:
+  scheme: date-based quarterly version in the URL path
+  current: '2026-07'
+  supported: ['2025-10', '2026-01', '2026-04', '2026-07']
+  release_candidate: '2026-10'
+  unstable_channel: unstable
+  response_header: 'X-Shopify-Api-Version'
+  introspectable_at: QueryRoot.publicApiVersions
+  docs: null
+deprecation:
+  policy_url: null
+  sunset_header: false
+  note: >-
+    No Sunset or Deprecation response headers were observed. The GraphQL schema
+    does carry per-field @deprecated directives with reasons — the machine-readable
+    deprecation signal here is in the SDL, not in HTTP headers. Captured in
+    graphql/slingshot-biosciences-storefront.graphql.
+sla:
+  url: null
+  uptime_target: null
+status_page:
+  url: null
+  probed: https://status.slingshotbio.com/
+  probe_result: DNS did not resolve
+  note: >-
+    No first-party status page. No StatusPage pointer is wired in apis.yml —
+    recorded as absent rather than substituting the upstream platform's.
+changelog:
+  url: null
+  note: >-
+    No dated changelog for the store or the site. Product and company news is
+    published as undated resource pages under /resources/press-releases.
+deprecated_operations: []
+x-evidence:
+  fetched: '2026-08-05'
+  urls:
+  - url: https://slingshot-bio.myshopify.com/api/2026-07/graphql.json
+    http_status: 200
+  - url: https://status.slingshotbio.com/
+    http_status: 0
+    note: no DNS resolution
