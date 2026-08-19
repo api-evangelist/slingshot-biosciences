@@ -2,12 +2,9 @@ generated: '2026-08-05'
 method: searched
 status: published
 source: https://slingshot-bio.myshopify.com/api/mcp
-note: >-
-  Live Shopify Storefront MCP server for the Slingshot Bio store. An anonymous
-  JSON-RPC POST of tools/list returns HTTP 200 with the real tool set and full
-  inputSchemas — captured verbatim in slingshot-biosciences-mcp-tools.json.
-  Customer-scoped operations sit behind the OAuth 2.0 authorization server
-  advertised at https://slingshot-bio.myshopify.com/.well-known/oauth-protected-resource
+note: Live Shopify Storefront MCP server for the Slingshot Bio store. An anonymous JSON-RPC POST of tools/list
+  returns HTTP 200 with the real tool set and full inputSchemas — captured verbatim in slingshot-biosciences-mcp-tools.json.
+  Customer-scoped operations sit behind the OAuth 2.0 authorization server advertised at https://slingshot-bio.myshopify.com/.well-known/oauth-protected-resource
   (issuer https://shopify.com/authentication/60285812930).
 server:
   name: slingshot-bio-storefront
@@ -19,7 +16,8 @@ server:
 authorization:
   protected_resource: https://slingshot-bio.myshopify.com/.well-known/oauth-protected-resource
   authorization_server: https://shopify.com/authentication/60285812930
-  bearer_methods_supported: [header]
+  bearer_methods_supported:
+  - header
   scopes_supported:
   - openid
   - email
@@ -27,30 +25,32 @@ authorization:
   - customer-account-mcp-api:full
 tools:
 - name: search_catalog
-  description: >-
-    Search for products from the online store using natural language queries,
-    specific filter criteria, or both. At least one of query or filters must be
-    provided. Results are paginated.
-  input_properties: [meta, catalog]
+  description: Search for products from the online store using natural language queries, specific filter
+    criteria, or both. At least one of query or filters must be provided. Results are paginated.
+  input_properties:
+  - meta
+  - catalog
   required: []
 - name: get_product_details
-  description: >-
-    Look up a product by ID. Pass the options parameter to select a specific
-    variant for the product card; without options the first available variant is
-    returned.
-  input_properties: [product_id, options, country, language]
-  required: [product_id]
+  description: Look up a product by ID. Pass the options parameter to select a specific variant for the
+    product card; without options the first available variant is returned.
+  input_properties:
+  - product_id
+  - options
+  - country
+  - language
+  required:
+  - product_id
 - name: get_cart
-  description: >-
-    Get the cart including items, shipping options, discount info and checkout
-    URL for a given cart id.
-  input_properties: [cart_id]
-  required: [cart_id]
+  description: Get the cart including items, shipping options, discount info and checkout URL for a given
+    cart id.
+  input_properties:
+  - cart_id
+  required:
+  - cart_id
 - name: update_cart
-  description: >-
-    Consolidated cart update — add/remove/update line items, buyer information,
-    shipping details, discount codes, gift cards and notes in one call. When
-    creating a new cart only add_items is required.
+  description: Consolidated cart update — add/remove/update line items, buyer information, shipping details,
+    discount codes, gift cards and notes in one call. When creating a new cart only add_items is required.
   input_properties:
   - cart_id
   - add_items
@@ -65,11 +65,13 @@ tools:
   - note
   required: []
 - name: search_shop_policies_and_faqs
-  description: >-
-    Answer factual questions about the store's policies, products or services —
-    return policy, shipping policy, phone number, hours of operation.
-  input_properties: [query, context]
-  required: [query]
+  description: Answer factual questions about the store's policies, products or services — return policy,
+    shipping policy, phone number, hours of operation.
+  input_properties:
+  - query
+  - context
+  required:
+  - query
 x-evidence:
   fetched: '2026-08-05'
   url: https://slingshot-bio.myshopify.com/api/mcp
@@ -77,3 +79,11 @@ x-evidence:
   http_status: 200
   content_type: application/json
   tools_returned: 5
+deployment:
+  mode: remote
+  endpoint: https://slingshot-bio.myshopify.com/api/mcp
+  verified: probed
+  probe: live
+  tools: 5
+  checked: '2026-08-12'
+  source: catalog MCP census
