@@ -43,6 +43,11 @@ apis:
   tags:
   - GraphQL
   - E-Commerce
+  - Product
+  - Cart
+  tags_raw:
+  - GraphQL
+  - E-Commerce
   - Products
   - Cart
   properties:
