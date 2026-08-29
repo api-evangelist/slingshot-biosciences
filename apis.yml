@@ -13,6 +13,17 @@ description: 'Slingshot Biosciences is an Emeryville, California biotechnology c
   and Sanity Content Lake GROQ endpoints, content negotiation that serves markdown
   twins of every canonical page to agents that send Accept: text/markdown, and a live
   Shopify Storefront MCP server.'
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://www.slingshotbio.com/favicon.ico
 url: https://raw.githubusercontent.com/api-evangelist/slingshot-biosciences/refs/heads/main/apis.yml
 x-type: company
