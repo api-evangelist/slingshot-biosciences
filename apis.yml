@@ -80,6 +80,9 @@ apis:
     url: graphql/slingshot-biosciences-storefront.graphql
   - type: Documentation
     url: https://shopify.dev/docs/api/storefront
+  x-surface: platform-generated
+  x-platform: shopify
+  x-platform-surface: storefront-graphql
 - name: Slingshot Bio Content Lake GROQ API
   description: 'The Sanity Content Lake GROQ query API for the Slingshot Bio editorial
     surface — pages, resources, blog posts, press releases, product sheets and webinars
@@ -110,6 +113,9 @@ apis:
     url: mcp/slingshot-biosciences-mcp.yml
   - type: ToolCrosswalk
     url: mcp/slingshot-biosciences-tool-crosswalk.yml
+  x-surface: platform-generated
+  x-platform: shopify
+  x-platform-surface: storefront-mcp
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
