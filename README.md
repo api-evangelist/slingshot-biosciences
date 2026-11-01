@@ -64,27 +64,104 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Slingshot Biosciences is an Emeryville, California biotechnology company that engineers synthetic
-cell mimics — hydrogel-based particles that behave like real cells — as reproducible reference
-materials and controls for flow cytometry, spectral unmixing, immunophenotyping, cell and gene
-therapy potency assays, and instrument standardization. Product families include TruCytes,
-ViaComp, FlowCytes, ScatterBridge, SpectraComp, QuantCytes and StimCytes.
+Slingshot Biosciences is an Emeryville, California biotechnology company that engineers synthetic cell mimics — hydrogel-based particles that behave like real cells — as reproducible reference materials and controls for flow cytometry, spectral unmixing, immunophenotyping, cell and gene therapy potency assays, and instrument standardization. Its product families include TruCytes biomarker controls, ViaComp cell health controls, FlowCytes and ScatterBridge calibration controls, SpectraComp compensation and unmixing controls, QuantCytes quantitation controls and StimCytes functional controls. The company sells direct through a Shopify-backed storefront and publishes an unusually complete agent-facing surface for a life-sciences vendor: an llms.txt, an RFC 9727 /.well-known/api-catalog naming its Shopify Storefront GraphQL and Sanity Content Lake GROQ endpoints, content negotiation that serves markdown twins of every canonical page to agents that send Accept: text/markdown, and a live Shopify Storefront MCP server.
 
-For a life-sciences vendor it publishes an unusually complete agent-facing surface:
+**Areas:** Company · Biotechnology · Life Sciences · Flow Cytometry · Laboratory · Synthetic Biology · Diagnostics · Cell Therapy · E-Commerce · GraphQL · MCP
 
-- **`/llms.txt`** — orientation document naming the sitemaps, collections, blog and case studies.
-- **`/.well-known/api-catalog`** — an RFC 9727 linkset declaring two machine-readable APIs
-  (Shopify Storefront GraphQL and a Sanity Content Lake GROQ endpoint). The `api-catalog` link
-  relation is also served in the `Link` header of every page.
-- **Markdown twins** — every canonical URL returns `text/markdown` to a client sending
-  `Accept: text/markdown`, with `Vary: Accept` and `X-Robots-Tag: noindex`. A markdown content
-  index is published at `/sitemap.md`.
-- **A live MCP server** — `https://slingshot-bio.myshopify.com/api/mcp` answers anonymous
-  `tools/list` with five tools; customer-scoped operations are protected by an OAuth 2.0
-  authorization server advertised at `/.well-known/oauth-protected-resource`.
+## Slingshot Biosciences on APIs.io
 
-There is no OpenAPI. The machine-readable contract is the anonymously introspectable Storefront
-GraphQL schema (428 types), captured in `graphql/`.
+Everything profiled for Slingshot Biosciences is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/slingshot-biosciences/](https://apis.io/providers/slingshot-biosciences/)** — or go straight to one of the APIs or properties below.
 
-- https://www.slingshotbio.com/
-- https://www.hiive.com/securities/slingshot-biosciences-stock
+### APIs (3)
+
+- [Slingshot Bio Storefront GraphQL API](https://apis.io/apis/slingshot-biosciences/slingshot-bio-storefront-graphql-api/) — The Shopify Storefront GraphQL API for the Slingshot Bio online store, declared by the company in its own /.well-known/api-catalog. Serves products,…
+- [Slingshot Bio Content Lake GROQ API](https://apis.io/apis/slingshot-biosciences/slingshot-bio-content-lake-groq-api/) — The Sanity Content Lake GROQ query API for the Slingshot Bio editorial surface — pages, resources, blog posts, press releases, product sheets and webinars —…
+- [Slingshot Bio Storefront MCP Server](https://apis.io/apis/slingshot-biosciences/slingshot-bio-storefront-mcp-server/) — A live Model Context Protocol server for the Slingshot Bio store, answering anonymous tools/list over HTTP JSON-RPC with five tools: search_catalog,…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [slingshot-bio-storefront](https://apis.io/servers/slingshot-biosciences/slingshot-bio-storefront/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Slingshot Biosciences Authentication](https://apis.io/security/slingshot-biosciences/slingshot-biosciences-authentication/)
+- [Slingshot Biosciences Domain Security](https://apis.io/security/slingshot-biosciences/slingshot-biosciences-domain-security/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Slingshot Biosciences Scopes](https://apis.io/scopes/slingshot-biosciences/slingshot-biosciences-scopes/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.slingshotbio.com/)
+- [Pricing](https://www.slingshotbio.com/collections/catalog-products)
+- [Sign up](https://www.slingshotbio.com/request-a-quote-for-cell-mimics)
+- [Support](https://www.slingshotbio.com/contact)
+- [Blog](https://www.slingshotbio.com/resources/blog)
+- [Terms of service](https://www.slingshotbio.com/terms-and-conditions)
+- [Privacy policy](https://www.slingshotbio.com/privacy-policy)
+
+## API Evangelist rating
+
+**Kin Score 30.6** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 80.0 |
+| Contract quality | 9.3 |
+| Contract governance | 18.2 |
+| Operational transparency | 0.0 |
+| Developer ergonomics | 30.4 |
+| Access clarity | 44.7 |
+
+**Agent readiness 36.2** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | platform (partial credit) |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | — |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | yes |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 32.8** — Health
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/slingshot-biosciences/](https://apis.io/providers/slingshot-biosciences/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Slingshot Biosciences: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/slingshot-biosciences/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
